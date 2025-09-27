@@ -1,0 +1,33 @@
+{% extends 'website/base.html' %}
+
+{% block title %}User List - {{ block.super }}{% endblock %}
+
+{% block main_content %}
+<div class="card shadow">
+    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Registered Users</h3>
+        <a href="{% url 'add-user' %}" class="btn btn-light btn-sm">Add New User</a>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">This page will list all system users.</p>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>admin_user</td>
+                    <td>admin@ecom.com</td>
+                    <td>Admin</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,130 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "6ztr0wlmyzjsw2e6jn4019z0bz4po0gi",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAUBf-FtSFQSgGX7v0GcuFcpGpo0sfK-O_apAvdnpk5LxFpW2vcFp7jCHEWWpx-t0T5wW0HuFO7TTJPbZ3HJHdFHnSR1wn8vBzu30GlpX5rNqZLjNBzgg8ISdPgiy3cuxKoc56QKfBglO0BNrrz0M4qKGQNKPH-AAyaOMg:1v1zi9:uWOohc9lsltVAdrFFQ1IyHqoo9pF7nW-Js83vyWlUo8",
+    "expire_date": "2025-10-10T04:05:33.007Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "x869apgka9qy0sobumdijduojo701auw",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAUBf-FtSFQSgGX7v0GcuFcpGpo0sfK-O_apAvdnpk5LxFpW2vcFp7jCHEWWpx-t0T5wW0HuFO7TTJPbZ3HJHdFHnSR1wn8vBzu30GlpX5rNqZLjNBzgg8ISdPgiy3cuxKoc56QKfBglO0BNrrz0M4qKGQNKPH-AAyaOMg:1v2CBg:3f0YenIdkCigfBn0nXqgHyVoeVCMPxWlIGJHd9bLF7U",
+    "expire_date": "2025-10-10T17:24:52.518Z"
+  }
+},
+{
+  "model": "website.product",
+  "pk": 3,
+  "fields": {
+    "productname": "Samsung Galaxy S25",
+    "description": "120hz | 44hrs play back",
+    "price": 1234567.0
+  }
+},
+{
+  "model": "website.product",
+  "pk": 4,
+  "fields": {
+    "productname": "iphone",
+    "description": "pro max",
+    "price": 123456789.0
+  }
+},
+{
+  "model": "website.cartitem",
+  "pk": 1,
+  "fields": {
+    "cart": 1,
+    "product": 3,
+    "quantity": 3
+  }
+},
+{
+  "model": "website.cartitem",
+  "pk": 2,
+  "fields": {
+    "cart": 1,
+    "product": 4,
+    "quantity": 1
+  }
+},
+{
+  "model": "website.authuser",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$GRxveOgvVKz876rsD4OQaX$GAzOqUw5hW67lcYnYxyHcVz04JIi9XkP5bLYMzIqoAg=",
+    "last_login": "2025-09-27T08:53:13.937Z",
+    "is_superuser": true,
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-09-25T09:48:16.098Z",
+    "email": "mahendra.182848.m@gmail.com",
+    "username": "mahendra",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "website.cart",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-09-27T08:31:09.104Z"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-09-25T09:49:43.186Z",
+    "user": [
+      "mahendra"
+    ],
+    "content_type": [
+      "website",
+      "authuser"
+    ],
+    "object_id": "2",
+    "object_repr": "1234",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-09-26T09:09:39.637Z",
+    "user": [
+      "mahendra"
+    ],
+    "content_type": [
+      "website",
+      "product"
+    ],
+    "object_id": "1",
+    "object_repr": "car",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-09-26T17:41:59.363Z",
+    "user": [
+      "mahendra"
+    ],
+    "content_type": [
+      "website",
+      "authuser"
+    ],
+    "object_id": "2",
+    "object_repr": "1234",
+    "action_flag": 3,
+    "change_message": ""
+  }
+}
+]

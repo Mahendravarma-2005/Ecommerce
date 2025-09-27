@@ -1,0 +1,88 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Home - ElectroMart{% endblock %}
+
+{% block main_content %}
+    
+    <div class="p-5 mb-5 rounded-3 text-white text-center shadow-sm" style="background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);">
+        <h1 class="fw-bold display-4">Welcome to ElectroMart</h1>
+        <p class="lead">Get the latest gadgets & accessories at unbeatable prices ⚡</p>
+        <a href="{% url 'products_list' %}" class="btn btn-warning btn-lg shadow mt-3 fw-bold">Shop Now</a>
+    </div>
+
+    <div class="p-4 mb-5 rounded-3 text-center bg-warning shadow-sm">
+        <h2 class="mb-2 text-dark fw-bold">🔥 Today's Deal: Flat 20% Off on Laptops</h2>
+        <p class="lead small text-dark">Limited time offer. Don't miss out!</p>
+        <a href="{% url 'products_list' %}" class="btn btn-dark btn-lg shadow fw-bold">Shop Deals</a>
+    </div>
+    
+    <!-- <h2 class="text-center mt-5 mb-4">OUR Customers</h2>
+    
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5">
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 text-center p-3"><h5 class="card-title mt-3">Customer1</h5></div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 text-center p-3"><h5 class="card-title mt-3">Customer2</h5></div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 text-center p-3"><h5 class="card-title mt-3">Customer3</h5></div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 text-center p-3"><h5 class="card-title mt-3">Customer4</h5></div>
+        </div>
+    </div>
+     -->
+    <h2 class="text-center mt-5 mb-4 border-top pt-4">Featured Products</h2>
+    
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+        {% for product in products|slice:":8" %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ product.productname }}</h5>
+                    <p class="card-text text-muted small flex-grow-1">{{ product.description|truncatewords:10 }}</p>
+                    <p class="fs-4 fw-bold text-success mb-2">${{ product.price|floatformat:2 }}</p>
+                    
+                    <form method="post" action="{% url 'add_to_cart' product.id %}" onsubmit="return promptForQuantity(this);">
+                        {% csrf_token %}
+                        <input type="hidden" name="quantity" value="1" id="quantity-input-{{ product.id }}">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center">No products are available right now.</div>
+        </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+    // Include the promptForQuantity function used by the forms above
+    function promptForQuantity(form) {
+        let quantity = prompt("Enter quantity to add to cart:", "1");
+        
+        if (quantity === null || quantity.trim() === "" || isNaN(quantity) || parseInt(quantity) <= 0) {
+            return false; 
+        }
+
+        let quantityInt = parseInt(quantity);
+        
+        let quantityInput = form.querySelector('input[name="quantity"]');
+        if (quantityInput) {
+            quantityInput.value = quantityInt;
+            return true;
+        }
+        
+        return false;
+    }
+</script>
+{% endblock scripts %}

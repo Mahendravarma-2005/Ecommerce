@@ -1,0 +1,49 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Add Product - {{ block.super }}{% endblock %}
+
+{% block main_content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header bg-success text-white"><h3 class="text-center font-weight-light my-4">Add New Product</h3></div>
+            <div class="card-body">
+                <form method="post" action="{% url 'add_product_page' %}">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="productName" name="productName" required 
+                               value="{{ form_data.productname|default:'' }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price (e.g., 199.99)</label>
+                        <input type="text" class="form-control" id="price" name="price" required 
+                               placeholder="Enter price" value="{{ form_data.price|default:'' }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3">{{ form_data.description|default:'' }}</textarea>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-block mt-3">Save Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

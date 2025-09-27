@@ -1,0 +1,32 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark h-100"> 
+    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none border-bottom pb-3">
+        <span class="fs-4 fw-bold text-warning">⚡ ElectroMart</span>
+    </a>
+    <ul class="nav nav-pills flex-column mb-auto mt-3">
+        <li class="nav-item">
+            <a href="{% url 'home' %}" class="nav-link text-white active" aria-current="page">
+                <i class="fas fa-home me-2"></i> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'products_list' %}" class="nav-link text-white">
+                <i class="fas fa-box me-2"></i> Products
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'user_list' %}" class="nav-link text-white">
+                <i class="fas fa-user-friends me-2"></i> Users
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                <i class="fas fa-user me-2"></i> Profile
+            </a>
+        </li>
+        <li class="mt-auto pt-3 border-top">
+            <a href="{% url 'logout' %}" class="btn btn-danger w-100">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </a>
+        </li>
+    </ul>
+</div>

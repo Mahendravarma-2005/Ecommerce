@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <title>
+        {% block title %}
+            ElectroMart
+        {% endblock %}
+      </title>
+      
+      {% include 'website/includes/headers.html' %}
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+      
+      <style>
+          /* Set a fixed width for the sidebar when it's open */
+          .sidebar-collapse.show {
+              width: 250px;
+              /* Keep the dark background */
+              background-color: #212529; 
+          }
+          /* Hide sidebar initially and make it collapse smoothly */
+          .sidebar-collapse {
+              width: 0;
+              transition: width 0.3s ease-in-out;
+              overflow-x: hidden;
+              /* Ensure it sits left of content */
+              flex-shrink: 0; 
+          }
+          /* Ensure main content takes up remaining space */
+          .main-content-wrapper {
+              width: 100%;
+          }
+          /* The whole body uses flex to arrange sidebar and content side-by-side */
+          body {
+              display: flex;
+          }
+      </style>
+    </head>
+<body class="min-vh-100"> 
+    
+    <aside class="sidebar-collapse collapse collapse-horizontal" id="sidebarMenu">
+        {% include 'website/includes/sidebar.html' %}
+    </aside>
+
+    <div class="main-content-wrapper d-flex flex-column flex-grow-1">
+        
+        {% include 'website/includes/navbar.html' %} 
+
+        <main class="flex-shrink-0">
+            <div class="container-fluid p-4">
+                {% block main_content %}
+                {% endblock %}
+            </div>
+        </main>
+
+        {% include 'website/includes/footers.html' %} 
+    </div>
+
+</body>
+</html>
+{% include 'website/includes/scripting.html' %}

@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm border-bottom"> 
+    <div class="container-fluid">
+        
+        <button class="btn btn-outline-secondary me-3 d-lg-block" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#sidebarMenu" 
+                aria-controls="sidebarMenu" 
+                aria-expanded="false" 
+                aria-label="Toggle navigation"
+                title="Toggle Sidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand text-primary fw-bold" href="{% url 'home' %}">⚡ ElectroMart</a>
+        
+        <div class="d-flex ms-auto align-items-center">
+            
+            <a href="{% url 'cart_view' %}" class="btn btn-outline-primary me-3" title="View Cart">
+                <i class="fas fa-shopping-cart"></i> 
+                <span class="badge bg-danger rounded-pill visually-hidden">0</span> 
+            </a>
+
+            {% if user.is_authenticated %}
+                <span class="navbar-text me-3 text-dark small d-none d-sm-block">Welcome, {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="btn btn-sm btn-danger">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-sm btn-warning">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
