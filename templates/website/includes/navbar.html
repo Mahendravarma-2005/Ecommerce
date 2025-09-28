@@ -1,20 +1,18 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm border-bottom"> 
-    <div class="container-fluid">
+    <div class="container-fluid pe-2"> 
         
-        <button class="btn btn-outline-secondary me-3 d-lg-block" 
-                type="button" 
-                data-bs-toggle="collapse" 
-                data-bs-target="#sidebarMenu" 
-                aria-controls="sidebarMenu" 
-                aria-expanded="false" 
-                aria-label="Toggle navigation"
-                title="Toggle Sidebar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <a class="navbar-brand text-primary fw-bold" href="{% url 'home' %}">⚡ ElectroMart</a>
+        <a class="navbar-brand text-dark fw-bold" href="{% url 'home' %}">⚡ ElectroMart</a>
         
-        <div class="d-flex ms-auto align-items-center">
+        <form class="d-flex mx-3" method="GET" action="{% url 'search' %}">
+            <div class="input-group">
+                <input class="form-control form-control-sm" type="search" placeholder="Search products..." 
+                       aria-label="Search" name="q" value="{{ request.GET.q|default:'' }}" style="min-width: 150px;">
+                <button class="btn btn-sm btn-outline-success" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+        <div class="d-flex ms-auto align-items-center me-2"> 
             
             <a href="{% url 'cart_view' %}" class="btn btn-outline-primary me-3" title="View Cart">
                 <i class="fas fa-shopping-cart"></i> 
@@ -22,8 +20,8 @@
             </a>
 
             {% if user.is_authenticated %}
-                <span class="navbar-text me-3 text-dark small d-none d-sm-block">Welcome, {{ user.username }}</span>
-                <a href="{% url 'logout' %}" class="btn btn-sm btn-danger">Logout</a>
+                <span class="navbar-text me-2 text-dark small d-none d-sm-block">Welcome, {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="btn btn-sm btn-danger">Logout</a> 
             {% else %}
                 <a href="{% url 'login' %}" class="btn btn-sm btn-warning">Login</a>
             {% endif %}

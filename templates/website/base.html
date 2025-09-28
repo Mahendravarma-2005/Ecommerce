@@ -12,39 +12,73 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
       
       <style>
-          /* Set a fixed width for the sidebar when it's open */
-          .sidebar-collapse.show {
-              width: 250px;
-              /* Keep the dark background */
-              background-color: #212529; 
+          /* Define the fixed width for JS control */
+          :root {
+              --sidebar-width-open: 220px; 
+              --sidebar-width-closed: 60px; 
           }
-          /* Hide sidebar initially and make it collapse smoothly */
-          .sidebar-collapse {
-              width: 0;
-              transition: width 0.3s ease-in-out;
-              overflow-x: hidden;
-              /* Ensure it sits left of content */
-              flex-shrink: 0; 
+          
+          /* CRITICAL FIX: Ensure no horizontal scrolling due to layout margin/width math */
+          body {
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scrollbar */
           }
-          /* Ensure main content takes up remaining space */
+          
+          /* 1. Sidebar Styling and Initial (Collapsed) State */
+          .sidebar-hover-wrapper {
+              position: fixed;
+              top: 0;
+              left: 0;
+              height: 100vh;
+              z-index: 1030; 
+              
+              width: var(--sidebar-width-closed);
+              transition: all 0.3s ease;
+              
+              /* Ensure inner content doesn't push the fixed element wider */
+              overflow-y: auto;
+              overflow-x: hidden; 
+              background-color: #212529; /* Dark background */
+          }
+          
+          /* 2. Main Content Wrapper: handles the shift of the entire page content */
           .main-content-wrapper {
               width: 100%;
-          }
-          /* The whole body uses flex to arrange sidebar and content side-by-side */
-          body {
+              min-height: 100vh;
               display: flex;
+              flex-direction: column;
+              
+              /* Start margin at the closed width */
+              margin-left: var(--sidebar-width-closed);
+              
+              transition: margin-left 0.3s ease-in-out;
+              /* CRITICAL: Ensure content uses remaining space */
+              width: calc(100% - var(--sidebar-width-closed));
+          }
+
+          /* Media query for mobile responsiveness to avoid layout issues */
+          @media (max-width: 991px) {
+            .sidebar-hover-wrapper {
+                width: 0;
+                transform: translateX(-220px); /* Fully hide sidebar off-screen */
+            }
+            .main-content-wrapper {
+                margin-left: 0;
+                width: 100%;
+            }
           }
       </style>
     </head>
 <body class="min-vh-100"> 
     
-    <aside class="sidebar-collapse collapse collapse-horizontal" id="sidebarMenu">
+    <aside class="sidebar-hover-wrapper" id="sidebarMenu">
         {% include 'website/includes/sidebar.html' %}
     </aside>
 
     <div class="main-content-wrapper d-flex flex-column flex-grow-1">
         
-        {% include 'website/includes/navbar.html' %} 
+        {% include 'website/includes/navbar.html' with show_toggle_button=False %} 
 
         <main class="flex-shrink-0">
             <div class="container-fluid p-4">
@@ -56,6 +90,40 @@
         {% include 'website/includes/footers.html' %} 
     </div>
 
+    <!-- START: JAVASCRIPT FOR HOVER BEHAVIOR -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebarMenu');
+            const mainContentWrapper = document.querySelector('.main-content-wrapper');
+            
+            const sidebarWidthOpen = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width-open').trim();
+            const sidebarWidthClosed = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width-closed').trim();
+
+            if (sidebar && mainContentWrapper) {
+                
+                function openSidebar() {
+                    sidebar.style.width = sidebarWidthOpen;
+                    mainContentWrapper.style.marginLeft = sidebarWidthOpen;
+                    // Dynamically adjust main content width when open
+                    mainContentWrapper.style.width = `calc(100% - ${sidebarWidthOpen})`; 
+                }
+
+                function closeSidebar() {
+                    sidebar.style.width = sidebarWidthClosed;
+                    mainContentWrapper.style.marginLeft = sidebarWidthClosed;
+                    // Dynamically adjust main content width when closed
+                    mainContentWrapper.style.width = `calc(100% - ${sidebarWidthClosed})`;
+                }
+                
+                // Initialize state on load
+                closeSidebar();
+
+                sidebar.addEventListener('mouseenter', openSidebar);
+                sidebar.addEventListener('mouseleave', closeSidebar);
+            }
+        });
+    </script>
+    
 </body>
 </html>
 {% include 'website/includes/scripting.html' %}

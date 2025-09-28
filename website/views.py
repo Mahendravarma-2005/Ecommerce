@@ -1,10 +1,10 @@
 # website/views.py
 
-from django.shortcuts import render, redirect, get_object_or_404 # IMPORTANT: get_object_or_404 is now imported
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required 
 from django.contrib import messages
-from .models import Product, Cart, CartItem # UPDATED: Cart and CartItem imported
+from .models import Product, Cart, CartItem 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -22,7 +22,6 @@ def home(request):
     return render(request, 'website/home.html', {"products": products})
 
 def login(request):
-    # If the user is already authenticated, redirect them home immediately
     if request.user.is_authenticated:
         return redirect('home')
         
@@ -50,17 +49,13 @@ def logout_view(request):
         messages.info(request, "You have been logged out successfully.")
     return redirect('login') 
 
-# website/views.py (Search function update)
 
-# ... (imports)
-
-@login_required(login_url='login') # ADD THIS DECORATOR
+@login_required(login_url='login') 
 def search(request):
     """ Renders the home page with products filtered by a search query. """
     query = request.GET.get("q")
     products = Product.objects.filter(productname__icontains=query) if query else []
     return render(request, 'website/home.html', {"search": query, "products": products})
-# ...
 
 
 # -------------------------
@@ -106,23 +101,19 @@ def add_user_page(request):
 
 
 # -------------------------
-# Cart Views (Functional logic now depends on the models above)
+# Cart Views 
 # -------------------------
-# website/views.py (Partial)
-
-# ... (rest of imports and views)
 
 @login_required(login_url='login')
 def add_to_cart(request, product_id):
-    """ Handles adding a product to the user's cart (via POST from product list). """
+    """ Handles adding a product to the user's cart. """
     if request.method == 'POST':
         product = get_object_or_404(Product, id=product_id)
         
-        # NEW: Get quantity from the POST data (defaults to 1 if not provided)
         try:
             quantity = int(request.POST.get('quantity', 1))
         except ValueError:
-            quantity = 1 # Fallback to 1 if input is non-numeric
+            quantity = 1 
             
         if quantity <= 0:
             messages.error(request, "Quantity must be greater than zero.")
@@ -135,19 +126,18 @@ def add_to_cart(request, product_id):
         cart_item, item_created = CartItem.objects.get_or_create(
             cart=cart,
             product=product,
-            defaults={'quantity': quantity} # Use the user-provided quantity
+            defaults={'quantity': quantity}
         )
         
         if not item_created:
             # If item already exists, increase quantity
-            cart_item.quantity += quantity # Add the new quantity to the existing quantity
+            cart_item.quantity += quantity
             cart_item.save()
             messages.success(request, f"Added {quantity} more {product.productname}(s) to your cart.")
         else:
             messages.success(request, f"{quantity} x {product.productname} added to your cart!")
 
-        # Redirect to the cart view to confirm addition
-        return redirect('cart_view') # Changed redirect to 'cart_view'
+        return redirect('cart_view') 
     
     return redirect('products_list') 
 
@@ -157,16 +147,45 @@ def cart_view(request):
     """
     Renders the cart page with actual items for the current user.
     """
-    # ... (code remains the same, it correctly uses dynamic context variables)
     try:
         cart = Cart.objects.get(user=request.user)
+        # Select CartItems belonging to the user's cart
         cart_items = cart.items.select_related('product') 
     except Cart.DoesNotExist:
         cart_items = None
         
     context = {
         'cart_items': cart_items,
+        # Calculate subtotal using list comprehension, safely handling empty cart
         'subtotal': sum(item.get_total_price() for item in (cart_items or []))
     }
     
     return render(request, 'website/cart.html', context)
+
+
+@login_required(login_url='login')
+def remove_from_cart(request, item_id):
+    """
+    Handles removing a specific CartItem from the user's cart.
+    Expects a POST request from the button in cart.html.
+    """
+    if request.method == 'POST':
+        # 1. Get the CartItem or return 404
+        # We use item_id here because cart.html passes the CartItem's ID
+        cart_item = get_object_or_404(CartItem, id=item_id)
+
+        # 2. Security Check: Ensure the item belongs to the current user's cart
+        if cart_item.cart.user != request.user:
+            messages.error(request, "Error: You do not have permission to remove that item.")
+            return redirect('cart_view')
+
+        # 3. Delete the item
+        product_name = cart_item.product.productname 
+        cart_item.delete()
+        
+        messages.success(request, f"**{product_name}** has been removed from your cart.")
+        return redirect('cart_view')
+    
+    # If a user somehow navigates here with a GET request, redirect them
+    messages.error(request, "Invalid request method.")
+    return redirect('cart_view')

@@ -12,8 +12,13 @@ urlpatterns = [
 
     # NEW: Cart View Path
     path('cart/', views.cart_view, name='cart_view'),
+    
     # NEW: Add to Cart Path (for form submission from product list)
     path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'), 
+    
+    # ⭐ NEW: Remove from Cart Path
+    # This URL pattern expects the CartItem's ID (item_id) to identify the item to remove.
+    path('cart/remove/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
 
     # ... (Existing Product and User Endpoints)
     path('products/list/', views.products_list, name='products_list'),
