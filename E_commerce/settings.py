@@ -64,11 +64,17 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:8000",
+#     "http://localhost:5173",
+#     "https://localhost:5173", 
+
+# ]
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",
-    "http://localhost:5173",
-    "https://localhost:5173", 
+    "https://ecommerce-frontend-qobc.onrender.com",  # your frontend URL
 ]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 ROOT_URLCONF = "E_commerce.urls"
 
